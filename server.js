@@ -12,8 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
-app.use('/api/routes/',taskRoute);
-app.use('/api/employee/',employeeRoute);
+app.use('/api/routes',taskRoute);
+app.use('/api/employee',employeeRoute);
 
 
 mongoose.connect(process.env.MONGO_URI)
