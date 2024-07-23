@@ -4,18 +4,18 @@ const {
     postTask, getAll, getOne, deleteTask, updateTask
 } = require('../controllers/taskControllers')
 
-const requireAuth = require('../middleware/requireAuth')
-router.use(requireAuth)
+const requireAuth = require('../middleware/requireAuth');
+router.use(requireAuth);
 
-router.get('/', getAll)
+router.get('/', getAll);
 
-router.get('/:id', getOne)
+router.get('/:id', getOne);
 
-router.post('/', postTask)
+router.post('/', postTask);
 
-router.delete('/:id', deleteTask)
+router.delete('/:id', deleteTask);
 
-router.patch('/:id', updateTask)
+router.patch('/:id', updateTask);
 
 
 module.exports = router

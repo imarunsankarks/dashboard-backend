@@ -22,7 +22,6 @@ const employeeSchema = new Schema(
     role: {
       type: String,
       required: true,
-      default: "employee",
     },
   },
   { timestamps: true }
