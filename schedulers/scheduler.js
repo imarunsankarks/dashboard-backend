@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const scheduleTasks = () => {
   // Daily recurrence at 9.30 am
-  cron.schedule('30 9 * * *', async () => {
+  cron.schedule('59 9 * * 1-5', async () => {
     await createRecurringTasks('daily');
   });
 
@@ -19,6 +19,38 @@ const scheduleTasks = () => {
     await createRecurringTasks('monthly');
   });
 };
+
+const initialTask = async (title, description, employee, status, recurrence, deadline) => {
+  try {
+    let newDeadline;
+    switch (recurrence) {
+      case 'daily':
+        newDeadline = moment(new Date()).endOf('day').toDate();
+        break;
+      case 'weekly':
+        newDeadline = moment(new Date()).endOf('week').toDate();
+        break;
+      case 'monthly':
+        newDeadline = moment(new Date()).endOf('month').toDate();
+        break;
+      default:
+        newDeadline = task.deadline;
+    }
+    const newTask = new Task({
+      title: title,
+      description: description,
+      employee: employee,
+      status: status,
+      recurrence: recurrence + ' none',
+      deadline: newDeadline,
+    });
+
+    await newTask.save();
+    console.log(`New ${recurrence} task created for ${employee}`);
+  } catch (error) {
+    console.error(`Error creating ${recurrence} tasks:`, error);
+  }
+}
 
 const createRecurringTasks = async (recurrence) => {
   try {
@@ -59,4 +91,4 @@ const createRecurringTasks = async (recurrence) => {
   }
 };
 
-module.exports = scheduleTasks;
+module.exports = {scheduleTasks, initialTask};

@@ -5,7 +5,7 @@ const {
 } = require('../controllers/taskControllers')
 
 const requireAuth = require('../middleware/requireAuth');
-router.use(requireAuth);
+// router.use(requireAuth);
 
 router.get('/', getAll);
 
