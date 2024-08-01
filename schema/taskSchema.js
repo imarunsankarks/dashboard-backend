@@ -8,6 +8,9 @@ const taskSchema = new Schema(
             type: String,
             required: true
         },
+        parentid:{
+            type: String,
+        },
         description: {
             type: String,
             required: true
@@ -24,7 +27,7 @@ const taskSchema = new Schema(
         },
         recurrence:{
             type: String,
-            enum: ['none','daily', 'weekly', 'monthly', 'daily none', 'weekly none','monthly none'],
+            enum: ['none','daily', 'weekly', 'monthly', 'daily recur', 'weekly recur','monthly recur'],
             default: 'none'
         },
         deadline: {

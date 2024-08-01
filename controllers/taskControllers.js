@@ -1,5 +1,7 @@
 const Task = require("../schema/taskSchema");
 const { initialTask } = require('../schedulers/scheduler');
+const updationCheck = require('../schedulers/updationCheck')
+const deleteAll = require('../schedulers/deleteAll')
 
 // get all tasks
 const getAll = async (req, res) => {
@@ -42,7 +44,7 @@ const postTask = async (req, res) => {
     });
     res.status(200).json(tasks);
     if (recurrence !== 'none') {
-      initialTask(title, description, employee, status, recurrence, deadline).catch(error => {
+      initialTask(title,tasks._id, description, employee, status, recurrence, deadline).catch(error => {
         console.error(`Error creating ${recurrence} task:`, error);
       });
 
@@ -59,6 +61,8 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ message: "No tasks found" });
     } else {
       res.status(200).json({ msg: "task deleted", task: task.title });
+      updationCheck();
+      deleteAll(req.params.id);
     }
   } catch (error) {
     res.status(500).json(error);
@@ -78,6 +82,7 @@ const updateTask = async (req, res) => {
       return res.status(404).json({ message: "No tasks found" });
     } else {
       res.status(200).json(task);
+      updationCheck();
     }
   } catch (error) {
     res.status(500).json(error);

@@ -1,11 +1,12 @@
 // scheduleTasks.js
 const cron = require('node-cron');
 const Task = require('../schema/taskSchema'); 
+const updationCheck = require('./updationCheck')
 const moment = require('moment');
 
 const scheduleTasks = () => {
   // Daily recurrence at 9.30 am
-  cron.schedule('59 9 * * 1-5', async () => {
+  cron.schedule('36 17 * * 1-5', async () => {
     await createRecurringTasks('daily');
   });
 
@@ -20,7 +21,7 @@ const scheduleTasks = () => {
   });
 };
 
-const initialTask = async (title, description, employee, status, recurrence, deadline) => {
+const initialTask = async (title,id, description, employee, status, recurrence, deadline) => {
   try {
     let newDeadline;
     switch (recurrence) {
@@ -38,10 +39,11 @@ const initialTask = async (title, description, employee, status, recurrence, dea
     }
     const newTask = new Task({
       title: title,
+      parentid: id,
       description: description,
       employee: employee,
       status: status,
-      recurrence: recurrence + ' none',
+      recurrence: recurrence + ' recur',
       deadline: newDeadline,
     });
 
@@ -76,14 +78,16 @@ const createRecurringTasks = async (recurrence) => {
       }
       const newTask = new Task({
         title: task.title,
+        parentid: task._id,
         description: task.description,
         employee: task.employee,
         status: 'pending',
-        recurrence: 'none', 
+        recurrence: recurrence + ' recur', 
         deadline: newDeadline,
       });
 
       await newTask.save();
+      updationCheck();
       console.log(`New ${recurrence} task created for ${task.employee}`);
     }
   } catch (error) {
