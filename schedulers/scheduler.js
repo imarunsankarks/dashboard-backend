@@ -6,7 +6,7 @@ const moment = require('moment');
 
 const scheduleTasks = () => {
   // Daily recurrence at 9.30 am
-  cron.schedule('36 17 * * 1-5', async () => {
+  cron.schedule('11 11 * * 1-5', async () => {
     await createRecurringTasks('daily');
   });
 
