@@ -1,12 +1,12 @@
 // scheduleTasks.js
 const cron = require('node-cron');
-const Task = require('../schema/taskSchema'); 
+const Task = require('../schema/taskSchema');
 const updationCheck = require('./updationCheck')
 const moment = require('moment');
 
 const scheduleTasks = () => {
   // Daily recurrence at 9.30 am
-  cron.schedule('11 11 * * 1-5', async () => {
+  cron.schedule('30 9 * * 1-5', async () => {
     await createRecurringTasks('daily');
   });
 
@@ -21,7 +21,7 @@ const scheduleTasks = () => {
   });
 };
 
-const initialTask = async (title,id, description, employee, status, recurrence, deadline) => {
+const initialTask = async (title, id, description, employee, status, recurrence, deadline) => {
   try {
     let newDeadline;
     switch (recurrence) {
@@ -82,7 +82,7 @@ const createRecurringTasks = async (recurrence) => {
         description: task.description,
         employee: task.employee,
         status: 'pending',
-        recurrence: recurrence + ' recur', 
+        recurrence: recurrence + ' recur',
         deadline: newDeadline,
       });
 
@@ -95,4 +95,4 @@ const createRecurringTasks = async (recurrence) => {
   }
 };
 
-module.exports = {scheduleTasks, initialTask};
+module.exports = { scheduleTasks, initialTask };
